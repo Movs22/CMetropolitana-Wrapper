@@ -32,9 +32,11 @@ const CMetropolitana = require("cmetropolitana.js")
 
 CMetropolitana.vehicles.fetch("41|1100").then(vehicle => {
     console.log(vehicle); // Vehicle { id: '41|1100', (...) }
+    vehicle.parent().then(pattern => { // vehicle.parent() will return this vehicle's pattern_id.
+        console.log(pattern) // Pattern { id: '1001_0_1', (...) }
+    })
 })
 ```
-
 Afterwards, we can listen to specific events:
 ```js
 const CMetropolitana = require("cmetropolitana.js")
@@ -65,6 +67,36 @@ CMetropolitana.vehicles.on("serviceEnd", (vec) => {
 })
 ```
 
+
+Get the line/route from a pattern, using .parent():
+```js
+const CMetropolitana = require("cmetropolitana.js")
+
+CMetropolitana.patterns.fetch("1001_0_1").then(async pattern => {
+    let route = await pattern.pattern(); // Route { id: "1001_0", (...) }
+    let line = await route.parent(); // Line { id: "1001", (...) }
+})
+```
+Or, you can get all lines/routes/patterns on a specific line, route or stop:
+```js
+const CMetropolitana = require("cmetropolitana.js")
+
+CMetropolitana.lines.fetch("1001").then(async line => {
+    let routes = await line.getRoutes(); // [ Route { id: "1001_0", (...) }, (...) ]
+    let patterns = await line.getPatterns(); // [ Pattern { id: "1001_0_1", (...) }, (...) ]
+})
+
+CMetropolitana.routes.fetch("1001_0").then(async route => {
+    let patterns = await route.getPatterns(); // [ Pattern { id: "1001_0_1", (...) }, (...) ]
+})
+
+CMetropolitana.stops.fetch("121270").then(async stop => {
+    let lines = await stop.getLines(); // [ Line { id: "1120", (...) }, (...) ]
+    let routes = await stop.getRoutes(); // [ Route { id: "1120_0", (...) }, (...) ]
+    let patterns = await stop.getPatterns(); // [ Pattern { id: "1120_0_2", (...) }, (...) ]
+})
+```
+
 Get details for a vehicle that's already cached by its ID
 ```js
 const CMetropolitana = require("cmetropolitana.js")
@@ -92,11 +124,26 @@ const CMetropolitana = require("cmetropolitana.js")
 
 const stop = CMetropolitana.stops.cache.get("060033") // Keep in mind that this will return null unless you've fetched this stop beforehand.\
 
+// Event: Triggered whenever a vehicle arrives at this stop.
 stop.on("vehicleArrival", (vec) => {
     console.log(`${vec.id} has arrived at ${stop.name}`)
 })
 
+// Event: Triggered whenever a vehicle departs from this stop.
 stop.on("vehicleDeparture", (vec) => {
     console.log(`${vec.id} has departed fromm ${stop.name}`)
 })
+```
+
+If necessary, you can fetch all of the stops, lines and routes beforehand:
+```js
+const CMetropolitana = require("cmetropolitana.js")
+
+async function load() {
+    await CMetropolitana.lines.fetchAll()
+    await CMetropolitana.routes.fetchAll()
+    await CMetropolitana.stops.fetchAll()
+}
+
+load()
 ```
