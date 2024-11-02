@@ -1,0 +1,30 @@
+{
+  "name": "cmetropolitana-wrapper",
+  "version": "1.0.1",
+  "description": "Javascript-based wrapper for Carris Metropolitana's public API",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Movs22/CMetropolitana.js.git"
+  },
+  "keywords": [
+    "transport",
+    "wrapper",
+    "lisbon",
+    "tml",
+    "api",
+    "cmetropolitana"
+  ],
+  "author": "Movies22 <github.movies22@gmail.com>",
+  "license": "GNU",
+  "bugs": {
+    "url": "https://github.com/Movs22/CMetropolitana.js/issues"
+  },
+  "homepage": "https://github.com/Movs22/CMetropolitana.js#readme",
+  "dependencies": {
+    "node-fetch": "^2.7.0"
+  }
+}
