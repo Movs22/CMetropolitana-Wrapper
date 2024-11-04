@@ -54,9 +54,21 @@ class Stop extends EventEmitter {
     } 
 
     /**
+     * Returns all cached alerts for the specified stop, as a {@link Alert} object.
+     * @example 
+     * const alerts = await stop.getAlerts()
+     * @constructor
+     * @returns {Array<Alert>}
+     */
+    alerts() {
+        let ac = require('../index').alerts;
+        return ac.forStop(this.id);
+    } 
+
+    /**
      * Returns all lines for the specified stop, as a {@link Line} object.
      * @example 
-     * const patterns = await line.getPatterns()
+     * const lines = await line.getLines()
      * @constructor
      * @returns {Promise<Array<Line>>}
      */
@@ -68,7 +80,7 @@ class Stop extends EventEmitter {
     /**
      * Returns all patterns for the specified line, as a {@link Pattern} object.
      * @example 
-     * const routes = await line.getRoutes()
+     * const patterns = await line.getPatterns()
      * @constructor
      * @returns {Promise<Array<Pattern>>}
      */

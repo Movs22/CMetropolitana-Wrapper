@@ -44,7 +44,7 @@ class LineManager {
         let line;
         let lines = f(API_BASE + "lines").then(r => {
             if(r.ok) return r.json(); 
-            throw new ApiError("Failed to fetch info for line #" + id + "\nReceived status code " + r.status + " " + r.statusText)
+            throw new ApiError("Failed to fetch info for ALL lines. \nReceived status code " + r.status + " " + r.statusText)
         }).then(l2 => {
             return l2.map(l => {
                 line = new Line(l.id, l);

@@ -40,7 +40,6 @@ CMetropolitana.vehicles.fetch("41|1100").then(vehicle => {
     })
 })
 
-
 async function load() {
     await CMetropolitana.stops.fetchAll() // Fetches all stops and caches them
 

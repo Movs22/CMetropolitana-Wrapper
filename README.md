@@ -10,6 +10,8 @@ yarn add cmetropolitana.js
 
 ## Example usage
 
+Feel free to also check the suplied [example.js](https://github.com/Movs22/CMetropolitana.js/blob/main/example.js) file for further details! This package also includes JSDocs (which should work with any existing IDE).
+
 Installation:
 ```sh
 npm install cmetropolitana.js
@@ -23,6 +25,7 @@ const CMetropolitana = require("cmetropolitana.js")
 CMetropolitana.stops.fetch("060033").then(stop => {
     console.log(stop.name); // Marquês de Pombal (Metro) P1
     console.log(stop.patterns); // Array of service patterns serving this stop.
+    console.log(stop.alerts()); // Array of any (cached) alerts for this stop.
 })
 ```
 
@@ -97,6 +100,36 @@ CMetropolitana.stops.fetch("121270").then(async stop => {
 })
 ```
 
+Get info of a specific school:
+```js
+const CMetropolitana = require("cmetropolitana.js")
+
+CMetropolitana.schools.fetch("200098").then(school => {
+    console.log(school.name); // School name
+    console.log(school.stops); // Returns an array with nearby stops (as strings).
+    school.getStops().then(stops => console.log(stops)) // Same as school.stops, but returns Stop classes instead of strings: [ Stop { id: "070401", (...) }, (...) ]
+})
+```
+
+Get existing alerts:
+```js
+const CMetropolitana = require("cmetropolitana.js")
+
+async function load() {
+    CMetropolitana.alerts.fetchAll(); // Fetches all alerts
+    CMetropolitana.routes.fetchAll(); // Fetches all routes (you can also do CMetropolitana.routes.fetch("XXXX_X").then(route => {}) )
+    CMetropolitana.stops.fetchAll(); // Fetches all stops (you can also do CMetropolitana.stops.fetch("XXXXXX").then(route => {}) )
+}
+
+CMetropolitana.alerts.forStop("060006"); // Returns an array with all cached alerts for the given stop (or an empty array if there're none).
+// OR
+CMetropolitana.stops.cache.get("060006").alerts();
+
+CMetropolitana.alerts.forRoute("1001_0"); // Returns an array with all cached alerts for the given route (or an empty array if there're none).
+// OR
+CMetropolitana.routes.cache.get("1001_0").alerts();
+```
+
 Get details for a vehicle that's already cached by its ID
 ```js
 const CMetropolitana = require("cmetropolitana.js")
@@ -143,6 +176,8 @@ async function load() {
     await CMetropolitana.lines.fetchAll()
     await CMetropolitana.routes.fetchAll()
     await CMetropolitana.stops.fetchAll()
+    await CMetropolitana.alerts.fetchAll()
+    await CMetropolitana.schools.fetchAll()
 }
 
 load()

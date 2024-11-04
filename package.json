@@ -1,5 +1,5 @@
 {
-  "name": "cmetropolitana-wrapper",
+  "name": "cmetropolitana.js",
   "version": "1.0.1",
   "description": "Javascript-based wrapper for Carris Metropolitana's public API",
   "main": "src/index.js",

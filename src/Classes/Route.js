@@ -26,6 +26,18 @@ class Route {
         let pc = require('../index').patterns;
         return await Promise.all(this.patterns.map(async a => pc.cache.get(a) || await pc.fetch(a)));
     }  
+
+    /**
+     * Returns all cached alerts for the specified stop, as a {@link Alert} object.
+     * @example 
+     * const alerts = await stop.getAlerts()
+     * @constructor
+     * @returns {Array<Alert>}
+     */
+    alerts() {
+        let ac = require('../index').alerts;
+        return ac.forRoute(this.id);
+    } 
 }
 
 module.exports = Route;

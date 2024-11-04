@@ -16,6 +16,18 @@ class PatternManager {
     }
 
     /**
+    * Returns all cached alerts for the specified stop, as a {@link Alert} object.
+    * @example 
+    * const alerts = await stop.getAlerts()
+    * @constructor
+    * @returns {Array<Alert>}
+    */
+    alerts() {
+        let ac = require('../index').alerts;
+        return ac.forStop(this.id);
+    }
+
+    /**
      * Fetches a pattern from its ID.
      * @example 
      * await patterns.fetch('1000_0_0')
@@ -23,9 +35,9 @@ class PatternManager {
      * @returns {Promise<Pattern>}
      */
     async fetch(id) {
-        if(id.length !== 8 || id[4] !== "_" || id[6] !== "_") throw new ValidationError("Invalid ID provided. Expected length 8 with the following format: XXXX_X_X. Received length " + id.length + " and ID " + id)
+        if (id.length !== 8 || id[4] !== "_" || id[6] !== "_") throw new ValidationError("Invalid ID provided. Expected length 8 with the following format: XXXX_X_X. Received length " + id.length + " and ID " + id)
         let pattern = f(API_BASE + "patterns/" + id).then(r => {
-            if(r.ok) return r.json(); 
+            if (r.ok) return r.json();
             throw new ApiError("Failed to fetch info for pattern #" + id + "\nReceived status code " + r.status + " " + r.statusText)
         }).then(r => {
             pattern = new Pattern(id, r);

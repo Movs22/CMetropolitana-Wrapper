@@ -45,7 +45,7 @@ class StopManager {
         let stop;
         let stops = f(API_BASE + "stops").then(r => {
             if(r.ok) return r.json(); 
-            throw new ApiError("Failed to fetch info for stop #" + id + "\nReceived status code " + r.status + " " + r.statusText)
+            throw new ApiError("Failed to fetch info for ALL stops.\nReceived status code " + r.status + " " + r.statusText)
         }).then(s2 => {
             return s2.map(s => {
                 stop = new Stop(s.id, s);

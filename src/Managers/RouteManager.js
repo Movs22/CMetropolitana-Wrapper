@@ -1,5 +1,6 @@
 const { API_BASE, f } = require("../constants");
 const ApiError = require("../Errors/ApiError");
+const ValidationError = require("../Errors/ValidationError");
 const CacheManager = require("./CacheManager");
 
 const Route = require("../Classes/Route")
@@ -44,7 +45,7 @@ class RouteManager {
         let route;
         let routes = f(API_BASE + "routes").then(r => {
             if(r.ok) return r.json(); 
-            throw new ApiError("Failed to fetch info for route #" + id + "\nReceived status code " + r.status + " " + r.statusText)
+            throw new ApiError("Failed to fetch info for ALL routes.\nReceived status code " + r.status + " " + r.statusText)
         }).then(r2 => {
             return r2.map(r => {
                 route = new Route(r.id, r);
