@@ -21,6 +21,16 @@ class CacheManager {
     }
 
     /**
+     * Returns the size of the given cache.
+     * @example 
+     * cache.size()
+     * @returns {int}
+     */
+    size() {
+        return Object.keys(this._cache).length;
+    }
+
+    /**
      * Adds a value to be cached under the supplied key.
      * @example 
      * cache.__set('key', value)

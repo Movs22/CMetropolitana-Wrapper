@@ -17,7 +17,7 @@ class VehicleManager extends EventEmitter {
     constructor() {
         super();
         this.cache = new CacheManager();
-        this.__vehicles = {};
+        this.__vehicles = [];
         this.__reqFetch = false;
         setInterval(async () => {
             if (!this.__reqFetch) return;
@@ -91,6 +91,31 @@ class VehicleManager extends EventEmitter {
             })
         })
         return await this.cache.get(id);
+    }
+
+    /**
+     * Fetches all vehicles and caches them.
+     * @example 
+     * await vehicles.fetchAll()
+     */
+    async fetchAll() {
+        let v;
+        this.__vehicles = await f(API_BASE2 + "vehicles").then(r => {
+            if (r.ok) return r.json();
+            throw new ApiError("Failed to fetch buses\nReceived status code " + r.status + " " + r.statusText)
+        }).then(r => {
+            return r.map(vec => {
+                if (this.cache.get(vec.id)) {
+                    this.cache.get(vec.id).__update(vec);
+                    return this.cache.get(vec.id)
+                } else {
+                    v = new Vehicle(vec.id, vec)
+                    this.cache.__set(vec.id, v)
+                    return v;
+                }
+            })
+        })
+        return;
     }
 
     /**

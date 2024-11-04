@@ -13,6 +13,22 @@ class Pattern {
         Object.keys(info).forEach(k => this[k] = info[k]);
         let rc = require('../index').routes;
         this.parent = () => rc.cache.get(this.route_id) || rc.fetch(this.route_id)
+        this.__shape = {};
+    }
+
+    /**
+     * Returns the GeoJSON data for this pattern from its ID.
+     * @example 
+     * pattern.shape())
+     * @returns {Promise<Object>}
+     */
+    async shape() {
+        if(this.__shape) return this.__shape;
+        this.__shape = f(API_BASE + "shapes/" + this.shapeId).then(r => {
+            if (r.ok) return r.json();
+            throw new ApiError("Failed to fetch info for shape #" + this.shapeId + "\nReceived status code " + r.status + " " + r.statusText)
+        })
+        return await this.__shape;
     }
 }
 
